@@ -1,0 +1,66 @@
+{% comment %}
+  Brand-new section: Gift Guide Banner
+  - All red-rectangled text editable via schema settings
+  - Includes button hover animation (see CSS)
+{% endcomment %}
+
+{{ 'gift-guide.css' | asset_url | stylesheet_tag }}
+{{ 'gift-guide.js'  | asset_url | script_tag }}
+
+<section class="gift-guide gift-banner" style="--pad:24px;">
+  <!-- Announcement -->
+  <div class="gift-announce">
+    <div>{{ section.settings.announce_text }}</div>
+    <a class="btn-ghost" href="{{ section.settings.announce_button_link }}">{{ section.settings.announce_button_label }}</a>
+  </div>
+
+  <!-- Background image (optional) -->
+  {% if section.settings.bg_image != blank %}
+    <div class="gift-banner__bg" style="background-image:url({{ section.settings.bg_image | image_url: width:2000 }});"></div>
+  {% endif %}
+
+  <!-- Hero -->
+  <div class="gift-container gift-banner__hero">
+    <h1 class="gift-banner__title">{{ section.settings.title }}</h1>
+    <p class="gift-banner__sub">{{ section.settings.subtitle }}</p>
+    <div class="gift-banner__cta">
+      <a class="btn-solid" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+      {% if section.settings.cta2_label != blank %}
+      <a class="btn-ghost" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Tagline strip -->
+  <div class="gift-banner__strip">
+    {{ section.settings.strip_text }}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Gift Guide Banner (Custom)",
+  "class": "section-gift-banner",
+  "settings": [
+    { "type": "text", "id": "announce_text", "label": "Announcement text", "default": "Find the ideal gift for your loved ones."},
+    { "type": "text", "id": "announce_button_label", "label": "Announcement button label", "default": "CHOOSE GIFT" },
+    { "type": "url", "id": "announce_button_link", "label": "Announcement button link" },
+
+    { "type": "text", "id": "title", "label": "Heading", "default": "The Gift Guide" },
+    { "type": "textarea", "id": "subtitle", "label": "Subheading", "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season." },
+
+    { "type": "text", "id": "cta_label", "label": "Primary button label", "default": "SHOP NOW" },
+    { "type": "url",  "id": "cta_link", "label": "Primary button link" },
+
+    { "type": "text", "id": "cta2_label", "label": "Secondary button label", "default": "" },
+    { "type": "url",  "id": "cta2_link", "label": "Secondary button link" },
+
+    { "type": "text", "id": "strip_text", "label": "Tagline strip", "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL" },
+
+    { "type": "image_picker", "id": "bg_image", "label": "Line-art background (optional)" }
+  ],
+  "presets": [
+    { "name": "Gift Guide Banner (Custom)" }
+  ]
+}
+{% endschema %}
