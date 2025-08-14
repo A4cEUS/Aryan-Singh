@@ -98,3 +98,66 @@
 }
 .gg-error { color:#c00; margin-top:10px; font-size:13px; display:none; }
 .gg-hidden { display:none !important; }
+
+/* ---------- Responsive Design Improvements ---------- */
+@media (max-width: 768px) {
+  .gift-banner__hero { padding: 40px 0 20px; }
+  .gift-banner__title { font-size: 42px; margin: 12px 0; }
+  .gift-banner__sub { font-size: 15px; }
+  .gift-banner__cta { 
+    flex-direction: column; 
+    gap: 8px; 
+    margin-top: 20px; 
+  }
+  
+  .btn-ghost, .btn-solid {
+    --h: 44px;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .gift-announce {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  
+  .gg-modal { padding: 16px; }
+  .gg-modal__body { padding: 18px 18px 20px; }
+  .gg-title { font-size: 20px; }
+  .gg-actions { 
+    flex-direction: column; 
+    gap: 8px; 
+  }
+  .gg-actions .btn-solid,
+  .gg-actions .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+  .gg-qty { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 6px; 
+  }
+  .gg-opt { 
+    flex-direction: column; 
+    gap: 6px; 
+  }
+  .gg-chip {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gift-banner__title { font-size: 36px; }
+  .gift-banner__sub { font-size: 14px; }
+  .gift-grid { padding: 24px 0 60px; }
+  .gift-grid__wrap { gap: 12px; }
+  .card__badge {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+}

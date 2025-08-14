@@ -53,6 +53,17 @@
   function openModal(){ modal.setAttribute('open',''); }
   function closeModal(){ modal.removeAttribute('open'); errorEl.classList.add('gg-hidden'); }
 
+  // Show loading state
+  function setLoading(loading) {
+    if (loading) {
+      addBtn.textContent = 'ADDING...';
+      addBtn.disabled = true;
+    } else {
+      addBtn.textContent = 'ADD TO CART';
+      addBtn.disabled = false;
+    }
+  }
+
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
@@ -125,6 +136,14 @@
     card.addEventListener('click', async () => {
       try{
         const handle = card.dataset.handle;
+        if (!handle) {
+          console.warn('No product handle found for card');
+          return;
+        }
+
+        // Show loading state
+        setLoading(true);
+        
         const product = await fetchProduct(handle);
         currentProduct = product;
 
@@ -134,7 +153,7 @@
 
         // Title/price/desc
         title.textContent = product.title;
-        price.textContent = money(product.price, product.price_currency);
+        price.textContent = money(product.price, currentProduct.price_currency);
         desc.textContent = (product.description || '').replace(/<[^>]*>?/gm,'').trim();
 
         // Options
@@ -144,10 +163,12 @@
         // Qty
         qtyInput.value = 1;
 
+        setLoading(false);
         openModal();
       }catch(err){
         console.error(err);
-        alert('Could not load product.');
+        setLoading(false);
+        alert('Could not load product. Please try again.');
       }
     });
   });
@@ -156,6 +177,8 @@
   addBtn.addEventListener('click', async () => {
     try{
       errorEl.classList.add('gg-hidden');
+      setLoading(true);
+      
       const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
       const variant = getSelectedVariant(currentProduct) || currentProduct.variants.find(v => v.available);
       if(!variant) throw new Error('No variant available');
@@ -188,17 +211,22 @@
             const bonusVariant = bonusProduct.variants.find(v => v.available) || bonusProduct.variants[0];
             if (bonusVariant) {
               await addToCart(bonusVariant.id, 1, { _auto_added: 'Gift Guide rule' });
+              console.log('Bonus product added:', bonusProduct.title);
             }
-          }catch(e){ console.warn('Bonus add failed', e); }
+          }catch(e){ 
+            console.warn('Bonus add failed', e); 
+          }
         }
       }
 
+      setLoading(false);
       // Close and navigate to cart (or show a mini feedback)
       closeModal();
       window.location.href = '/cart';
     }catch(err){
       console.error(err);
-      errorEl.textContent = 'Sorry, we could not add this to your cart.';
+      setLoading(false);
+      errorEl.textContent = 'Sorry, we could not add this to your cart. Please try again.';
       errorEl.classList.remove('gg-hidden');
     }
   });
