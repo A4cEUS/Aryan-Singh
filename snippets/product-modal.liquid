@@ -1,0 +1,25 @@
+<div id="gg-modal" class="gg-modal" aria-hidden="true">
+  <div class="gg-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="gg-modal-title">
+    <button id="gg-close" class="gg-close" aria-label="Close">✕</button>
+    <div id="gg-modal-media" class="gg-modal__media"></div>
+    <div class="gg-modal__body">
+      <h3 id="gg-modal-title" class="gg-title">Title</h3>
+      <div id="gg-modal-price" class="gg-price">$0.00</div>
+      <div id="gg-modal-desc" class="gg-desc"></div>
+
+      <div id="gg-modal-options" class="gg-options"></div>
+
+      <div class="gg-qty">
+        <label for="gg-qty">Qty</label>
+        <input id="gg-qty" type="number" min="1" value="1" inputmode="numeric">
+      </div>
+
+      <div class="gg-actions">
+        <button id="gg-add" class="btn-solid" type="button">ADD TO CART</button>
+        <button id="gg-cancel" class="btn-ghost" type="button" onclick="document.getElementById('gg-modal').removeAttribute('open')">Cancel</button>
+      </div>
+
+      <div id="gg-error" class="gg-error gg-hidden">Error</div>
+    </div>
+  </div>
+</div>

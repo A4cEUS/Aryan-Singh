@@ -1,0 +1,58 @@
+{% comment %}
+  Brand-new section: Gift Guide Grid (6 selectable products + modal popup)
+  - Uses Shopify AJAX product JSON for popup
+  - Adds bonus product automatically on rule match (Black + Medium)
+{% endcomment %}
+
+{{ 'gift-guide.css' | asset_url | stylesheet_tag }}
+{{ 'gift-guide.js'  | asset_url | script_tag }}
+
+<section class="gift-guide gift-grid">
+  <div class="gift-container">
+    <div class="gift-grid__wrap">
+      {% for i in (1..6) %}
+        {% assign prod = section.settings["product_" | append: i] %}
+        <article class="card gg-card" {% if prod %} data-handle="{{ prod.handle }}"{% endif %} role="button" aria-label="Open product">
+          {% if prod and prod.featured_image %}
+            <img src="{{ prod.featured_image | image_url: width:900 }}" alt="{{ prod.title | escape }}">
+          {% else %}
+            <img src="{{ 'placeholder-image.png' | asset_url }}" alt="">
+          {% endif %}
+          <div class="card__badge">i</div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% render 'product-modal' %}
+
+  <!-- Config for bonus rule -->
+  <div id="gg-bonus-config"
+       data-bonus-handle="{{ section.settings.bonus_product | default: '' | strip | handle }}"
+       data-trigger-color="{{ section.settings.trigger_color | default: 'Black' }}"
+       data-trigger-size="{{ section.settings.trigger_size | default: 'Medium' }}"
+       class="gg-hidden"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Gift Guide Grid (Custom)",
+  "class": "section-gift-grid",
+  "settings": [
+    { "type":"product", "id":"product_1", "label":"Product 1" },
+    { "type":"product", "id":"product_2", "label":"Product 2" },
+    { "type":"product", "id":"product_3", "label":"Product 3" },
+    { "type":"product", "id":"product_4", "label":"Product 4" },
+    { "type":"product", "id":"product_5", "label":"Product 5" },
+    { "type":"product", "id":"product_6", "label":"Product 6" },
+
+    { "type":"header", "content":"Bonus auto-add rule" },
+    { "type":"product", "id":"bonus_product", "label":"Bonus product to auto-add (e.g., Soft Winter Jacket)" },
+    { "type":"text", "id":"trigger_color", "label":"Trigger color option value", "default":"Black" },
+    { "type":"text", "id":"trigger_size",  "label":"Trigger size option value",  "default":"Medium" }
+  ],
+  "presets": [
+    { "name": "Gift Guide Grid (Custom)" }
+  ]
+}
+{% endschema %}
